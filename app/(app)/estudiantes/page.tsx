@@ -7,7 +7,7 @@ export default function EstudiantesPage() {
       <p className="text-muted-foreground mb-6">
         Haz clic en cualquier estudiante para ver sus detalles completos, 
         editarlo o eliminarlo. Para crear un nuevo estudiante, usa el botón 
-        "Nuevo Estudiante".
+        Nuevo Estudiante.
       </p>
       <TablaEstudiantes />
     </main>

@@ -7,7 +7,7 @@ export default function MaestrosPage() {
       <p className="text-muted-foreground mb-6">
         Haz clic en cualquier maestro para ver sus detalles completos, 
         editarlo o eliminarlo. Para crear un nuevo maestro, usa el botón 
-        "Nuevo Maestro".
+        Nuevo Maestro.
       </p>
       <TablaMaestros />
     </main>
