@@ -7,7 +7,7 @@
 import { ThemeToggle } from "../theme/theme-toggle";
 import Link from "next/link";
 
-const APP_TITLE = "Mi Negocio" as const;
+const APP_TITLE = "Mi Escuela" as const;
 
 /**
  * # Barra de navegación principal de la aplicación.

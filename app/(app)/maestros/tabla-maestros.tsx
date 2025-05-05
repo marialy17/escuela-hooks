@@ -7,60 +7,60 @@ import { Button } from "@/app/_components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function TablaEstudiantes() {
+export function TablaMaestros() {
   const router = useRouter();
-  const estudiantes = useQuery(api.estudiantes.obtenerEstudiantes);
+  const maestros = useQuery(api.maestros.obtenerMaestros);
 
-  if (estudiantes === undefined) {
-    return <div>Cargando estudiantes...</div>;
+  if (maestros === undefined) {
+    return <div>Cargando maestros...</div>;
   }
 
-  const handleVerEstudiante = (id: string) => {
-    router.push(`/estudiantes/${id}`);
+  const handleVerMaestro = (id: string) => {
+    router.push(`/maestros/${id}`);
   };
 
   const handleCrear = () => {
-    router.push("/estudiantes/create");
+    router.push("/maestros/create");
   };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Lista de Estudiantes</h2>
+        <h2 className="text-xl font-semibold">Lista de Maestros</h2>
         <Button onClick={handleCrear} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
-          Nuevo Estudiante
+          Nuevo Maestro
         </Button>
       </div>
       
       <Table>
-        <TableCaption>Lista de estudiantes registrados</TableCaption>
+        <TableCaption>Lista de maestros registrados</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Matrícula</TableHead>
+            <TableHead className="w-[100px]">Número Empleado</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Correo</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {estudiantes.length === 0 ? (
+          {maestros.length === 0 ? (
             <TableRow>
               <TableCell colSpan={3} className="text-center">
-                No hay estudiantes registrados
+                No hay maestros registrados
               </TableCell>
             </TableRow>
           ) : (
-            estudiantes.map((estudiante) => (
+            maestros.map((maestro) => (
               <TableRow 
-                key={estudiante._id}
+                key={maestro._id}
                 className="cursor-pointer hover:bg-muted/50"
-                onClick={() => handleVerEstudiante(estudiante._id)}
+                onClick={() => handleVerMaestro(maestro._id)}
               >
                 <TableCell className="font-medium">
-                  {estudiante.numMatricula}
+                  {maestro.numEmpleado}
                 </TableCell>
-                <TableCell>{estudiante.nombre}</TableCell>
-                <TableCell>{estudiante.correo}</TableCell>
+                <TableCell>{maestro.nombre}</TableCell>
+                <TableCell>{maestro.correo}</TableCell>
               </TableRow>
             ))
           )}

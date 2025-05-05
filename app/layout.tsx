@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import { Navbar } from "../app/_components/layout/navbar";
 import "../app/_styles/globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { Footer } from "./_components/layout/footer";
 
 /**
  * * Metadatos globales de la aplicación.
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: RootLayoutProps): React.ReactEl
             <ConvexClientProvider>
               <Navbar />
               <main className="flex-1">{children}</main>
+              <Footer />
             </ConvexClientProvider>
           </div>
         </ThemeProvider>
