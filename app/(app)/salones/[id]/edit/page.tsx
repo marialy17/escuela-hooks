@@ -6,38 +6,44 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/_components/ui/button";
-import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/app/_components/ui/card";
 import { ArrowLeft, Save } from "lucide-react";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/_components/ui/select";
 
-export default function EditarMaestroPage({ params }: { params: Promise<{ id: string }> }) {
+export default function EditarSalonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const idMaestro = id as Id<"maestros">;
+  const idSalon = id as Id<"salones">;
   const router = useRouter();
-  const maestro = useQuery(api.maestros.obtenerMaestrosPorId, { id: idMaestro });
-  const actualizarMaestro = useMutation(api.maestros.actualizarMaestro);
+  const salon = useQuery(api.salones.obtenerSalonesPorId, { id: idSalon });
+  const actualizarSalon = useMutation(api.salones.actualizarSalon);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    numEmpleado: "",
-    nombre: "",
-    correo: ""
+    numSalon: "",
+    edificio: "",
+    planta: ""
   });
   
-  // Cargar datos del maestro cuando estén disponibles
+  // Cargar datos del salón cuando estén disponibles
   useEffect(() => {
-    if (maestro) {
+    if (salon) {
       setFormData({
-        numEmpleado: maestro.numEmpleado,
-        nombre: maestro.nombre,
-        correo: maestro.correo
+        numSalon: salon.numSalon,
+        edificio: salon.edificio,
+        planta: salon.planta
       });
     }
-  }, [maestro]);
+  }, [salon]);
   
-  if (maestro === undefined) {
+  if (salon === undefined) {
     return (
       <div className="container mx-auto py-10">
         <div className="flex items-center gap-2 mb-6">
@@ -64,22 +70,21 @@ export default function EditarMaestroPage({ params }: { params: Promise<{ id: st
     );
   }
 
-  if (!maestro) {
+  if (!salon) {
     return (
       <div className="container mx-auto py-10">
         <div className="flex items-center gap-2 mb-6">
           <Button variant="outline" size="icon" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-3xl font-bold">Maestro no encontrado</h1>
+          <h1 className="text-3xl font-bold">Salón no encontrado</h1>
         </div>
-        <p>No se pudo encontrar el Maestro con el ID proporcionado.</p>
+        <p>No se pudo encontrar el Salón con el ID proporcionado.</p>
       </div>
     );
   }
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   
@@ -88,13 +93,13 @@ export default function EditarMaestroPage({ params }: { params: Promise<{ id: st
     setIsSubmitting(true);
     
     try {
-      await actualizarMaestro({
-        id: maestro._id,
+      await actualizarSalon({
+        id: salon._id,
         ...formData,
       });
-      router.push(`/maestros/${id}`);
+      router.push(`/salones/${id}`);
     } catch (error) {
-      console.error("Error al actualizar maestro:", error);
+      console.error("Error al actualizar salón:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -106,50 +111,67 @@ export default function EditarMaestroPage({ params }: { params: Promise<{ id: st
         <Button variant="outline" size="icon" onClick={() => router.back()}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-3xl font-bold">Editar Maestro</h1>
+        <h1 className="text-3xl font-bold">Editar Salón</h1>
       </div>
       
       <Card className="max-w-2xl mx-auto">
         <form onSubmit={handleSubmit}>
           <CardHeader>
-            <CardTitle className="font-semibold text-center">Modificar información de {maestro.nombre}</CardTitle>
+            <CardTitle className="font-semibold text-center">Modificar información del Salón {salon.numSalon}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="numEmpleado">Número de Empleado</Label>
-              <Input
-                id="numEmpleado"
-                name="numEmpleado"
-                value={formData.numEmpleado}
-                onChange={handleChange}
-                placeholder="Ej: A12345"
-                required
-              />
+              <Label htmlFor="numSalon">Número de Salón</Label>
+              <Select 
+                onValueChange={(value) => handleSelectChange("numSalon", value)}
+                value={formData.numSalon}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona el número de salón" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                    <SelectItem key={num} value={num.toString()}>
+                      {num}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="nombre">Nombre Completo</Label>
-              <Input
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                placeholder="Nombre del maestro"
-                required
-              />
+              <Label htmlFor="edificio">Edificio</Label>
+              <Select 
+                onValueChange={(value) => handleSelectChange("edificio", value)}
+                value={formData.edificio}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona el edificio" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["A", "B", "C", "D"].map((edificio) => (
+                    <SelectItem key={edificio} value={edificio}>
+                      Edificio {edificio}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="correo">Correo Electrónico</Label>
-              <Input
-                id="correo"
-                name="correo"
-                type="email"
-                value={formData.correo}
-                onChange={handleChange}
-                placeholder="correo@ejemplo.com"
-                required
-              />
+              <Label htmlFor="planta">Planta</Label>
+              <Select 
+                onValueChange={(value) => handleSelectChange("planta", value)}
+                value={formData.planta}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona la planta" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Planta Alta">Planta Alta</SelectItem>
+                  <SelectItem value="Planta Baja">Planta Baja</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
           
@@ -164,8 +186,8 @@ export default function EditarMaestroPage({ params }: { params: Promise<{ id: st
             </Button>
             <Button 
               type="submit" 
-              disabled={isSubmitting}
-              className="flex items-center gap-2 mt-8"
+              disabled={isSubmitting || !formData.numSalon || !formData.edificio || !formData.planta}
+              className="flex items-center gap-2"
             >
               <Save className="h-4 w-4" />
               {isSubmitting ? "Guardando..." : "Guardar Cambios"}
