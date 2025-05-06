@@ -17,8 +17,8 @@ import { Footer } from "./_components/layout/footer";
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
  */
 export const metadata: Metadata = {
-  title: "Mi Negocio",
-  description: "WebApp para gestionar mi negocio",
+  title: "Mi Escuela",
+  description: "WebApp para gestionar mi escuela",
   icons: {
     icon: "/favicon.ico",
   },
