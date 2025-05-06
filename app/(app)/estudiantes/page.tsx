@@ -1,4 +1,8 @@
+'use client';
+
 import { TablaEstudiantes } from "./tabla-estudiantes";
+// import { Counter_H } from "@/app/_components/contador-hook";
+// import { Counter } from "@/app/_components/contador-not-hook";
 
 export default function EstudiantesPage() {
   return (
@@ -10,6 +14,8 @@ export default function EstudiantesPage() {
         Nuevo Estudiante.
       </p>
       <TablaEstudiantes />
+      {/* <Counter />
+      <Counter_H /> */}
     </main>
   );
 }

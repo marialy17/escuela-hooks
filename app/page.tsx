@@ -4,7 +4,6 @@
  * Página principal de la aplicación.
  * Implementa un diseño centrado y responsive para el contenido inicial.
  */
-
 export default function Home() {
   const sections = [
     { name: "Estudiantes", href: "/estudiantes" },
@@ -27,7 +26,6 @@ export default function Home() {
             >
               {section.name}
             </a>
-
           ))}
         </div>
       </div>
